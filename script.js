@@ -202,3 +202,118 @@ document.addEventListener('DOMContentLoaded', function() {
         timeSlots.forEach(s => s.classList.remove('selected'));
     });
 });
+// Form submission handler
+document.getElementById('appointmentForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // Get form values
+    const formData = {
+        name: document.getElementById('name').value,
+        phone: document.getElementById('phone').value,
+        email: document.getElementById('email').value,
+        service: document.getElementById('service').value,
+        date: document.getElementById('date').value,
+        time: document.getElementById('time').value,
+        address: document.getElementById('address').value,
+        notes: document.getElementById('notes').value
+    };
+    
+    // Format the SMS message
+    const smsMessage = `New Booking Request:
+Name: ${formData.name}
+Phone: ${formData.phone}
+Email: ${formData.email}
+Service: ${formData.service}
+Date: ${formData.date}
+Time: ${formData.time}
+Address: ${formData.address}
+Notes: ${formData.notes || 'None'}`;
+    
+    // Send SMS using Twilio or other SMS gateway
+    sendSMS(smsMessage);
+    
+    // Show confirmation to user
+    alert('Thank you! Your booking request has been submitted. We will contact you shortly.');
+    this.reset();
+});
+
+// Function to send SMS (using Twilio as an example)
+function sendSMS(message) {
+    const ownerPhoneNumber = '+14158667605'; // Owner's phone number
+    
+    // In a real implementation, you would use an SMS API like Twilio
+    // This is a simplified example - actual implementation requires server-side code
+    console.log('SMS would be sent to:', ownerPhoneNumber);
+    console.log('Message:', message);
+    
+    // For a real implementation, you would need to:
+    // 1. Set up a server endpoint to handle SMS sending
+    // 2. Call that endpoint from here with the message data
+    // 3. Use an SMS service like Twilio, Nexmo, etc.
+    
+    // Example using fetch (requires backend implementation):
+    /*
+    fetch('/api/send-sms', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            to: ownerPhoneNumber,
+            message: message
+        }),
+    })
+    .then(response => response.json())
+    .then(data => console.log('SMS sent:', data))
+    .catch(error => console.error('Error sending SMS:', error));
+    */
+}
+
+// Populate service options (you can customize these)
+function populateServices() {
+    const services = [
+        'Office Cleaning',
+        'Commercial Cleaning',
+        'Residential Cleaning',
+        'Deep Cleaning',
+        'Carpet Cleaning',
+        'Window Cleaning',
+        'Post-Construction Cleaning'
+    ];
+    
+    const serviceSelect = document.getElementById('service');
+    services.forEach(service => {
+        const option = document.createElement('option');
+        option.value = service;
+        option.textContent = service;
+        serviceSelect.appendChild(option);
+    });
+}
+
+// Populate time slots (you can customize these)
+function populateTimeSlots() {
+    const times = [
+        '8:00 AM - 10:00 AM',
+        '10:00 AM - 12:00 PM',
+        '12:00 PM - 2:00 PM',
+        '2:00 PM - 4:00 PM',
+        '4:00 PM - 6:00 PM'
+    ];
+    
+    const timeSelect = document.getElementById('time');
+    times.forEach(time => {
+        const option = document.createElement('option');
+        option.value = time;
+        option.textContent = time;
+        timeSelect.appendChild(option);
+    });
+}
+
+// Initialize the page
+document.addEventListener('DOMContentLoaded', function() {
+    populateServices();
+    populateTimeSlots();
+    
+    // Set current year in footer
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+});
