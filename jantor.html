@@ -1,49 +1,98 @@
-<section id="booking">
-    <div class="container">
-        <div class="section-title">
-            <h2>Book Your Appointment</h2>
-            <p>Fill out the form below to schedule your cleaning service</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNITED JANITORIAL SERVICES INC - Professional Cleaning</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- [Previous header and sections remain exactly the same until booking section] -->
+
+    <section id="booking">
+        <div class="container">
+            <div class="section-title">
+                <h2>Book Your Appointment</h2>
+                <p>Fill out the form below to schedule your cleaning service</p>
+            </div>
+            <form class="booking-form" id="appointmentForm" action="sms:+14158667605" method="get">
+                <input type="hidden" name="body" id="smsBody">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Your Phone Number</label>
+                    <input type="tel" id="phone" name="phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="service">Service Needed</label>
+                    <select id="service" name="service" required>
+                        <option value="">Select service</option>
+                        <option value="Office Cleaning">Office Cleaning</option>
+                        <option value="Commercial Cleaning">Commercial Cleaning</option>
+                        <option value="Residential Cleaning">Residential Cleaning</option>
+                        <option value="Deep Cleaning">Deep Cleaning</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="date">Preferred Date</label>
+                    <input type="date" id="date" name="date" required>
+                </div>
+                <div class="form-group">
+                    <label for="time">Preferred Time</label>
+                    <select id="time" name="time" required>
+                        <option value="">Select time</option>
+                        <option value="Morning (8am-12pm)">Morning (8am-12pm)</option>
+                        <option value="Afternoon (12pm-4pm)">Afternoon (12pm-4pm)</option>
+                        <option value="Evening (4pm-8pm)">Evening (4pm-8pm)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="address">Service Address</label>
+                    <input type="text" id="address" name="address" required>
+                </div>
+                <div class="form-group">
+                    <label for="notes">Special Instructions</label>
+                    <textarea id="notes" name="notes" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Send Booking Request</button>
+            </form>
         </div>
-        <form class="booking-form" id="appointmentForm">
-            <div class="form-group">
-                <label for="name">Full Name</label>
-                <input type="text" id="name" name="name" required>
-            </div>
-            <div class="form-group">
-                <label for="phone">Phone Number</label>
-                <input type="tel" id="phone" name="phone" required>
-            </div>
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email">
-            </div>
-            <div class="form-group">
-                <label for="service">Service Type</label>
-                <select id="service" name="service" required>
-                    <option value="">Select a service</option>
-                    <!-- Options will be populated by JavaScript -->
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="date">Preferred Date</label>
-                <input type="date" id="date" name="date" required>
-            </div>
-            <div class="form-group">
-                <label for="time">Preferred Time</label>
-                <select id="time" name="time" required>
-                    <option value="">Select a time</option>
-                    <!-- Options will be populated by JavaScript -->
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="address">Service Address</label>
-                <textarea id="address" name="address" rows="3" required></textarea>
-            </div>
-            <div class="form-group">
-                <label for="notes">Special Instructions</label>
-                <textarea id="notes" name="notes" rows="3"></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit Booking</button>
-        </form>
-    </div>
-</section>
+    </section>
+
+    <!-- [Footer remains exactly the same] -->
+
+    <script>
+        // Current year in footer
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+        
+        // SMS form handling
+        document.getElementById('appointmentForm').addEventListener('submit', function(e) {
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            const service = document.getElementById('service').value;
+            const date = document.getElementById('date').value;
+            const time = document.getElementById('time').value;
+            const address = document.getElementById('address').value;
+            const notes = document.getElementById('notes').value;
+            
+            const smsBody = `New Booking Request:
+Name: ${name}
+Phone: ${phone}
+Service: ${service}
+Date: ${date} at ${time}
+Address: ${address}
+Notes: ${notes || 'None'}`;
+            
+            document.getElementById('smsBody').value = smsBody;
+            
+            // On desktop, show alert since SMS won't send automatically
+            if (!/Mobi|Android|iPhone/i.test(navigator.userAgent)) {
+                alert("On mobile, this would send via SMS. Here's your message:\n\n" + smsBody);
+                e.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html>
